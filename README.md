@@ -7,8 +7,8 @@ Created by **Dolapo Ogunsola**, this project showcases the journey of a self-tau
 
 ## 🚀 Vision
 
-> I want to buy a Sony FX30, master color grading, and tell stories through films.  
-> I’m learning HTML, CSS, JavaScript, React, and Spring Boot to build a website that reflects that vision.
+I want to buy a Sony FX30, master color grading, and tell stories through films.  
+I’m learning HTML, CSS, JavaScript, React, and Spring Boot to build a website that reflects that vision.
 
 ---
 
