@@ -1,6 +1,6 @@
 # dolapos_website
 
-#A cinematic portfolio built from scratch — blending filmmaking, photography, and full-stack development.  
+A cinematic portfolio built from scratch — blending filmmaking, photography, and full-stack development.  
 Created by **Dolapo Ogunsola**, this project showcases the journey of a self-taught creative and engineer building his vision one frame and one line of code at a time.
 
 ---
