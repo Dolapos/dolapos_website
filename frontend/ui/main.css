@@ -1,0 +1,55 @@
+@font-face {
+    font-family: 'Uni Sans';
+    src: url('fonts/Uni_Sans_Heavy.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tommy';
+    src: url('fonts/TOMMY___.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+nav li {
+    font-family: "Tommy";
+    display: inline;
+    float: left;
+    font-size: .75rem;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    display: block;
+    padding: 8px;
+    color: inherit;
+    text-decoration: none;
+}
+
+nav a:visited {
+    color: inherit;  
+}
+
+nav a:focus,
+nav a:active {
+  outline: none;            
+  text-decoration: none;   
+}
+
+.nav-link {
+    color: inherit;
+    text-decoration: none;
+    padding: 10px;
+}
+  
+.nav-link.active {
+    background-color: #ececec;
+    color: white;
+    border-radius: 5px;
+}
