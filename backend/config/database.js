@@ -1,49 +1,48 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 
-const dbPath = path.join(__dirname, '../data/portfolio.db');
+// Database file path
+const dataDir = path.join(__dirname, '../data');
+const dbPath = path.join(dataDir, 'portfolio.db');
 
+// Create data directory if it doesn't exist
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
+// Connect to SQLite database
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error opening database:', err.message);
+    process.exit(1);
   } else {
-    console.log('Connected to SQLite database');
+    console.log('Connected to SQLite database:', dbPath);
   }
 });
 
-// Initialize database tables
-db.serialize(() => {
-  // Admin table
-  db.run(`
-    CREATE TABLE IF NOT EXISTS admin (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL,
-      secret_path TEXT UNIQUE NOT NULL,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
+// Initialize database from schema file
+function initializeDatabase() {
+  const schemaPath = path.join(__dirname, '../database/schema.sql');
 
-  // Videos table
-  db.run(`
-    CREATE TABLE IF NOT EXISTS videos (
-      id TEXT PRIMARY KEY,
-      title TEXT NOT NULL,
-      description TEXT,
-      filename TEXT NOT NULL,
-      file_path TEXT NOT NULL,
-      thumbnail_path TEXT,
-      duration INTEGER,
-      file_size INTEGER,
-      category TEXT DEFAULT 'general',
-      is_featured BOOLEAN DEFAULT 0,
-      view_count INTEGER DEFAULT 0,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
+  if (!fs.existsSync(schemaPath)) {
+    console.error('Schema file not found:', schemaPath);
+    return;
+  }
 
-  console.log('Database tables initialized');
-});
+  const schema = fs.readFileSync(schemaPath, 'utf8');
+
+  // Execute schema
+  db.exec(schema, (err) => {
+    if (err) {
+      console.error('Error initializing database schema:', err.message);
+    } else {
+      console.log('Database schema initialized successfully');
+    }
+  });
+}
+
+// Initialize on startup
+initializeDatabase();
 
 module.exports = db;
