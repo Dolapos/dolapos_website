@@ -927,6 +927,7 @@ main {
   border: 1px solid;
   text-align: center;
   font-size: 0.875rem;
+  margin-bottom: 2rem;
 }
 
 .error-banner {
@@ -980,13 +981,17 @@ main {
 }
 
 .dashboard-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .upload-section, .videos-list-section {
   margin-bottom: 4rem;
+  width: 100%;
 }
 
 .upload-section h2, .videos-list-section h2 {
