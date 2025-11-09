@@ -3,6 +3,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+// Predefined categories
+const CATEGORIES = [
+  { value: 'commercial', label: 'Commercial' },
+  { value: 'short-film', label: 'Short Film' },
+  { value: 'music-video', label: 'Music Video' },
+  { value: 'documentary', label: 'Documentary' },
+  { value: 'experimental', label: 'Experimental' },
+  { value: 'general', label: 'General' },
+];
+
 function AdminDashboard() {
   const { secretPath } = useParams();
   const navigate = useNavigate();
@@ -20,6 +30,15 @@ function AdminDashboard() {
   });
   const [videoFile, setVideoFile] = useState(null);
   const [thumbnailFile, setThumbnailFile] = useState(null);
+
+  // Edit modal state
+  const [editingVideo, setEditingVideo] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    title: '',
+    description: '',
+    category: 'general',
+    is_featured: false
+  });
 
   useEffect(() => {
     // Check if user is authenticated
@@ -131,12 +150,15 @@ function AdminDashboard() {
     }
   };
 
-  const handleDelete = async (videoId) => {
-    if (!confirm('Are you sure you want to delete this video?')) {
+  const handleDelete = async (videoId, videoTitle) => {
+    const confirmMessage = `Are you sure you want to delete "${videoTitle}"?\n\nThis action cannot be undone.`;
+    if (!confirm(confirmMessage)) {
       return;
     }
 
     const token = localStorage.getItem('adminToken');
+    setError('');
+    setSuccess('');
 
     try {
       const response = await fetch(`${API_URL}/videos/${videoId}`, {
@@ -150,11 +172,71 @@ function AdminDashboard() {
         throw new Error('Failed to delete video');
       }
 
-      setSuccess('Video deleted successfully!');
+      setSuccess(`Video "${videoTitle}" deleted successfully!`);
       fetchVideos();
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const handleEditClick = (video) => {
+    setEditingVideo(video);
+    setEditFormData({
+      title: video.title,
+      description: video.description || '',
+      category: video.category,
+      is_featured: video.is_featured === 1
+    });
+    setError('');
+    setSuccess('');
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setEditFormData({
+      ...editFormData,
+      [name]: type === 'checkbox' ? checked : value
+    });
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    const token = localStorage.getItem('adminToken');
+
+    try {
+      const response = await fetch(`${API_URL}/videos/${editingVideo.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editFormData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update video');
+      }
+
+      setSuccess(`Video "${editFormData.title}" updated successfully!`);
+      setEditingVideo(null);
+      fetchVideos();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingVideo(null);
+    setEditFormData({
+      title: '',
+      description: '',
+      category: 'general',
+      is_featured: false
+    });
+    setError('');
   };
 
   const handleLogout = () => {
@@ -217,16 +299,21 @@ function AdminDashboard() {
 
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="category">Category</label>
-                <input
-                  type="text"
+                <label htmlFor="category">Category *</label>
+                <select
                   id="category"
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  placeholder="e.g., commercial, short-film, music-video"
                   disabled={uploading}
-                />
+                  required
+                >
+                  {CATEGORIES.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="form-group checkbox-group">
@@ -320,7 +407,13 @@ function AdminDashboard() {
 
                   <div className="video-actions">
                     <button
-                      onClick={() => handleDelete(video.id)}
+                      onClick={() => handleEditClick(video)}
+                      className="edit-btn"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(video.id, video.title)}
                       className="delete-btn"
                     >
                       Delete
@@ -332,6 +425,81 @@ function AdminDashboard() {
           )}
         </section>
       </div>
+
+      {/* Edit Modal */}
+      {editingVideo && (
+        <div className="modal-overlay" onClick={handleCancelEdit}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Edit Video</h2>
+              <button onClick={handleCancelEdit} className="modal-close">✕</button>
+            </div>
+
+            <form onSubmit={handleEditSubmit} className="edit-form">
+              <div className="form-group">
+                <label htmlFor="edit-title">Title *</label>
+                <input
+                  type="text"
+                  id="edit-title"
+                  name="title"
+                  value={editFormData.title}
+                  onChange={handleEditInputChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit-description">Description</label>
+                <textarea
+                  id="edit-description"
+                  name="description"
+                  value={editFormData.description}
+                  onChange={handleEditInputChange}
+                  rows="4"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="edit-category">Category *</label>
+                <select
+                  id="edit-category"
+                  name="category"
+                  value={editFormData.category}
+                  onChange={handleEditInputChange}
+                  required
+                >
+                  {CATEGORIES.map((cat) => (
+                    <option key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group checkbox-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="is_featured"
+                    checked={editFormData.is_featured}
+                    onChange={handleEditInputChange}
+                  />
+                  Featured Project
+                </label>
+              </div>
+
+              <div className="modal-actions">
+                <button type="button" onClick={handleCancelEdit} className="cancel-btn">
+                  Cancel
+                </button>
+                <button type="submit" className="save-btn">
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
