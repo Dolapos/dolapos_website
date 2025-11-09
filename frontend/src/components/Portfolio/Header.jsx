@@ -6,12 +6,8 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header-container">
-        <Link to="/">
-          <img
-            src="/logo.png"
-            alt="Your Name Logo"
-            className="logo"
-          />
+        <Link to="/" className="logo-text">
+          DOLAPS
         </Link>
         <nav>
           <Link to="/work">PORTFOLIO</Link>
