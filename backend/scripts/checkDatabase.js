@@ -5,7 +5,7 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
 
-const dbPath = path.join(__dirname, '../data/portfolio.db');
+const dbPath = path.join(__dirname, '../database/portfolio.db');
 
 console.log('\n=== Database Status Check ===\n');
 

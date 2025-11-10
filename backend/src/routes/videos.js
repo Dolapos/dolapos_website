@@ -9,8 +9,8 @@ const { authenticateToken } = require('../middleware/auth');
 const router = express.Router();
 
 // Create uploads directory if it doesn't exist
-const uploadsDir = path.join(__dirname, '../uploads/videos');
-const thumbnailsDir = path.join(__dirname, '../uploads/thumbnails');
+const uploadsDir = path.join(__dirname, '../../uploads/videos');
+const thumbnailsDir = path.join(__dirname, '../../uploads/thumbnails');
 
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -201,14 +201,14 @@ router.delete('/:id', authenticateToken, (req, res) => {
     }
 
     // Delete the video file
-    const videoFilePath = path.join(__dirname, '..', video.file_path);
+    const videoFilePath = path.join(__dirname, '../..', video.file_path);
     if (fs.existsSync(videoFilePath)) {
       fs.unlinkSync(videoFilePath);
     }
 
     // Delete the thumbnail if exists
     if (video.thumbnail_path) {
-      const thumbnailFilePath = path.join(__dirname, '..', video.thumbnail_path);
+      const thumbnailFilePath = path.join(__dirname, '../..', video.thumbnail_path);
       if (fs.existsSync(thumbnailFilePath)) {
         fs.unlinkSync(thumbnailFilePath);
       }

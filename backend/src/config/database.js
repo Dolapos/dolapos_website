@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 // Database file path
-const dataDir = path.join(__dirname, '../data');
+const dataDir = path.join(__dirname, '../../database');
 const dbPath = path.join(dataDir, 'portfolio.db');
 
 // Create data directory if it doesn't exist
@@ -23,7 +23,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
 
 // Initialize database from schema file
 function initializeDatabase() {
-  const schemaPath = path.join(__dirname, '../database/schema.sql');
+  const schemaPath = path.join(__dirname, '../../database/schema.sql');
 
   if (!fs.existsSync(schemaPath)) {
     console.error('Schema file not found:', schemaPath);
