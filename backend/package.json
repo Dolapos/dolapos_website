@@ -7,6 +7,8 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "init-db": "node scripts/initDb.js",
+    "init-db-postgres": "node scripts/initDbPostgres.js",
+    "migrate-to-postgres": "node scripts/migrateToPostgres.js",
     "check-db": "node scripts/checkDatabase.js",
     "setup-s3": "npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner"
   },
@@ -17,8 +19,12 @@
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
-    "sqlite3": "^5.1.6",
+    "pg": "^8.11.3",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "sqlite3": "^5.1.6"
   },
   "optionalDependencies": {
     "@aws-sdk/client-s3": "^3.478.0",

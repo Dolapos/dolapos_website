@@ -27,10 +27,10 @@ I’m learning HTML, CSS, JavaScript, React, and Spring Boot to build a website 
 |------------|------------------------|
 | Frontend   | React.js 18 + Vite, Custom CSS |
 | Backend    | Node.js + Express.js |
-| Database   | SQLite (development), PostgreSQL (planned for production) |
+| Database   | SQLite (development), PostgreSQL (production) |
 | Authentication | JWT + bcrypt |
-| File Storage | Local file system (uploads directory) |
-| Hosting    | Vercel (Frontend), Railway/Render (Backend) |
+| File Storage | Local file system (development), AWS S3 (production) |
+| Hosting    | Vercel/Netlify (Frontend), Railway (Backend) |
 | Tools      | GitHub, VS Code |
 
 ---
@@ -176,5 +176,39 @@ This website features a **cinematic, minimalist design**:
 - Generous spacing and elegant animations
 - 16:9 aspect ratio for all video content
 - Responsive grid layouts
+
+---
+
+## 🌐 Deployment
+
+Ready to deploy your portfolio to the world?
+
+### Step-by-Step Guides
+
+1. **[AWS S3 Setup Guide](./AWS_S3_SETUP.md)** - Configure cloud storage for videos
+2. **[Railway Deployment Guide](./RAILWAY_DEPLOYMENT_GUIDE.md)** - Deploy backend and frontend to production
+
+### Quick Overview
+
+**Backend (Railway):**
+- PostgreSQL database for metadata
+- AWS S3 for video file storage
+- Automatic SSL certificates
+- Easy environment variable management
+
+**Frontend (Vercel/Netlify):**
+- Static site hosting with global CDN
+- Automatic deployments from Git
+- Custom domain support
+
+**Prerequisites:**
+- GitHub account
+- Railway account (free tier available)
+- AWS account (for S3 storage)
+- Vercel or Netlify account
+
+**Estimated Cost:** ~$0-5/month for most portfolio websites
+
+See the deployment guides for detailed instructions!
 
 ---
