@@ -5,6 +5,11 @@ export default function About() {
   return (
     <section id="about" className="about">
       <div className="about-container">
+        <h1 className="section-title">ABOUT</h1>
+        <p className="section-subtitle">
+          Filmmaker & Storyteller
+        </p>
+
         <div className="about-content">
           {/* Left side - Image and Social Icons */}
           <div className="about-left">
