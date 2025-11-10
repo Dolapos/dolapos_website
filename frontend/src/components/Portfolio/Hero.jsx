@@ -4,7 +4,6 @@ export default function Hero() {
   const [displayedText, setDisplayedText] = useState('');
   const fullText = 'CREATIVE\nEDITOR &\nCINEMATOGRAPHER';
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showCursor, setShowCursor] = useState(true);
 
   useEffect(() => {
     if (currentIndex < fullText.length) {
@@ -14,12 +13,6 @@ export default function Hero() {
       }, 80); // Speed of typing (80ms per character)
 
       return () => clearTimeout(timeout);
-    } else {
-      // Hide cursor after typing completes
-      const hideCursorTimeout = setTimeout(() => {
-        setShowCursor(false);
-      }, 1000);
-      return () => clearTimeout(hideCursorTimeout);
     }
   }, [currentIndex]);
 
@@ -33,7 +26,7 @@ export default function Hero() {
               {i < displayedText.split('\n').length - 1 && <br />}
             </React.Fragment>
           ))}
-          {showCursor && <span className="cursor">|</span>}
+          <span className="cursor">|</span>
         </h2>
         <p>
           Crafting stories that merge faith and art by using film as a medium to inspire authenticity and purpose
