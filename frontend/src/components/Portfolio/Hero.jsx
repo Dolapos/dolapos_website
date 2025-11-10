@@ -26,7 +26,7 @@ export default function Hero() {
               {i < displayedText.split('\n').length - 1 && <br />}
             </React.Fragment>
           ))}
-          <span className="cursor">|</span>
+          <span className="cursor">‎</span>
         </h2>
         <p>
           Crafting stories that merge faith and art by using film as a medium to inspire authenticity and purpose
