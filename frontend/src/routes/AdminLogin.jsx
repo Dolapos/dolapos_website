@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -156,6 +156,10 @@ function AdminLogin() {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+
+        <Link to="/" className="back-to-home">
+          ← Back to Home
+        </Link>
       </div>
     </div>
   );
